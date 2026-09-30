@@ -1,0 +1,98 @@
+{
+  "run_id": "best-88a4f0be",
+  "config_name": "best",
+  "config": {
+    "name": "best",
+    "mode": "hybrid",
+    "k_retrieve": 50,
+    "embedding": {
+      "model": "BAAI/bge-small-en-v1.5",
+      "max_tokens": 256,
+      "overlap": 32
+    },
+    "expansion": {
+      "enabled": true,
+      "n": 3,
+      "orig_weight": 1.0,
+      "alt_weight": 0.5
+    },
+    "fusion": {
+      "method": "weighted",
+      "k_rrf": 60,
+      "alpha": 0.4
+    },
+    "rerank": {
+      "enabled": false,
+      "model": "BAAI/bge-reranker-base",
+      "top_n": 30
+    },
+    "context": {
+      "top_c": 5,
+      "token_budget": 3000
+    }
+  },
+  "n": 100,
+  "recall@5": 0.6300111260127761,
+  "recall@10": 0.7923446143037967,
+  "mrr@10": 0.9024285714285714,
+  "ndcg@10": 0.8289220294329226,
+  "answer_correctness": 0.7025,
+  "groundedness": 0.9837078651685393,
+  "groundedness_n": 89,
+  "context_relevance": 0.925,
+  "judge_errors": 0,
+  "insufficient_pct": 10.999999999999998,
+  "invalid_citation_answers": 0,
+  "answers_with_zero_invalid_pct": 100.0,
+  "retrieval_ms_p50": 62.06727849985327,
+  "retrieval_ms_p95": 91.18878485001005,
+  "cost_usd": {
+    "expansion": 0.0043403999999999995,
+    "answer": 0.024663200000000007,
+    "judge": 0.6745455,
+    "total": 0.7035491
+  },
+  "judge_calls": 556,
+  "judge_version": "judge_v1",
+  "judge_model": "openrouter/google/gemini-3.8-flash",
+  "answer_model": "openrouter/openai/gpt-6-luna",
+  "expander_model": "openrouter/openai/gpt-6-luna",
+  "by_qtype": {
+    "definition": {
+      "recall@5": 0.7890374331550802,
+      "recall@10": 0.8987522281639929,
+      "mrr@10": 0.9117647058823529,
+      "ndcg@10": 0.8758705792521192
+    },
+    "effect": {
+      "recall@5": 0.5545805909776498,
+      "recall@10": 0.7347126525435349,
+      "mrr@10": 0.9151785714285714,
+      "ndcg@10": 0.8006146980867483
+    },
+    "list": {
+      "recall@5": 0.618627174189834,
+      "recall@10": 0.7395525403837424,
+      "mrr@10": 0.8431372549019608,
+      "ndcg@10": 0.7915186645872803
+    },
+    "mechanism": {
+      "recall@5": 0.6750360750360751,
+      "recall@10": 0.8289862914862915,
+      "mrr@10": 0.9125,
+      "ndcg@10": 0.8541809804531346
+    },
+    "treatment": {
+      "recall@5": 0.5651861754802932,
+      "recall@10": 0.819469201822143,
+      "mrr@10": 0.9411764705882353,
+      "ndcg@10": 0.8616161269817403
+    },
+    "yesno": {
+      "recall@5": 0.5758107433546754,
+      "recall@10": 0.7313600488008539,
+      "mrr@10": 0.8921568627450981,
+      "ndcg@10": 0.789551810746751
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "run_id": "hybrid_qe-a9f4691e",
+  "config_name": "hybrid_qe",
+  "config": {
+    "name": "hybrid_qe",
+    "mode": "hybrid",
+    "k_retrieve": 50,
+    "embedding": {
+      "model": "BAAI/bge-small-en-v1.5",
+      "max_tokens": 256,
+      "overlap": 32
+    },
+    "expansion": {
+      "enabled": true,
+      "n": 3,
+      "orig_weight": 1.0,
+      "alt_weight": 0.5
+    },
+    "fusion": {
+      "method": "rrf",
+      "k_rrf": 60,
+      "alpha": 0.5
+    },
+    "rerank": {
+      "enabled": false,
+      "model": "BAAI/bge-reranker-base",
+      "top_n": 30
+    },
+    "context": {
+      "top_c": 5,
+      "token_budget": 3000
+    }
+  },
+  "n": 100,
+  "recall@5": 0.6127232472248971,
+  "recall@10": 0.7705658652750477,
+  "mrr@10": 0.8947619047619046,
+  "ndcg@10": 0.8067954715808304,
+  "answer_correctness": 0.71,
+  "groundedness": 0.9824175824175825,
+  "groundedness_n": 91,
+  "context_relevance": 0.9325,
+  "judge_errors": 0,
+  "insufficient_pct": 8.999999999999996,
+  "invalid_citation_answers": 0,
+  "answers_with_zero_invalid_pct": 100.0,
+  "retrieval_ms_p50": 1515.930876000084,
+  "retrieval_ms_p95": 2066.993894349616,
+  "cost_usd": {
+    "expansion": 0.0043403999999999995,
+    "answer": 0.02486175000000001,
+    "judge": 0.6828405000000003,
+    "total": 0.7120426500000003
+  },
+  "judge_calls": 564,
+  "judge_version": "judge_v1",
+  "judge_model": "openrouter/google/gemini-3.8-flash",
+  "answer_model": "openrouter/openai/gpt-6-luna",
+  "expander_model": "openrouter/openai/gpt-6-luna",
+  "by_qtype": {
+    "definition": {
+      "recall@5": 0.8086452762923351,
+      "recall@10": 0.8869875222816399,
+      "mrr@10": 0.8872549019607843,
+      "ndcg@10": 0.8486390008807058
+    },
+    "effect": {
+      "recall@5": 0.5264555909776498,
+      "recall@10": 0.7098801933360757,
+      "mrr@10": 0.90625,
+      "ndcg@10": 0.7792384199246452
+    },
+    "list": {
+      "recall@5": 0.5845808283787823,
+      "recall@10": 0.7199446972464875,
+      "mrr@10": 0.8382352941176471,
+      "ndcg@10": 0.7659647127065901
+    },
+    "mechanism": {
+      "recall@5": 0.6594110750360751,
+      "recall@10": 0.8207792207792208,
+      "mrr@10": 0.90625,
+      "ndcg@10": 0.8565894757295052
+    },
+    "treatment": {
+      "recall@5": 0.5798920578332343,
+      "recall@10": 0.7827044959397901,
+      "mrr@10": 0.9411764705882353,
+      "ndcg@10": 0.8322348629832501
+    },
+    "yesno": {
+      "recall@5": 0.5150264296291852,
+      "recall@10": 0.7024830434532604,
+      "mrr@10": 0.8907563025210083,
+      "ndcg@10": 0.7594144132892557
+    }
+  }
+}
