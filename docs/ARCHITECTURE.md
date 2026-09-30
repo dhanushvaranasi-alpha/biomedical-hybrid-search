@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Draft v0.1 |
+| **Status** | v0.2, implemented; some detail differs, see REPORT.md |
 | **Date** | 2026-09-30 |
 | **Related** | [PRD.md](./PRD.md) · [SYSTEM_DESIGN.md](./SYSTEM_DESIGN.md) |
 

@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Draft v0.1 |
+| **Status** | v0.2, implemented; outcomes in [REPORT.md](../REPORT.md) |
 | **Owner** | Dhanush Varanasi |
 | **Date** | 2026-09-30 |
 | **Repo** | `dhanushvaranasi-alpha/biomedical-hybrid-search` |
@@ -163,7 +163,7 @@ Priority: **P0** = required by the brief, **P1** = strongly desirable, **P2** = 
 ## 11. Open questions
 
 1. ~~Which LLM provider/models to use?~~ **Decided (2026-09-30): one OpenRouter API key**, called through LiteLLM. Roles: a cheap OpenAI model (Luna tier) for query expansion and final answers; a Google model (Gemini 3.8 Flash) as the fixed RAGAS judge, so the judge is from a different vendor than the answerer. Exact OpenRouter model IDs are set in `.env` and must be confirmed on openrouter.ai/models before the first run; the chosen IDs are recorded in each run's `env.json`.
-2. Embedding model final pick — general (e.g. `BAAI/bge-small-en-v1.5`) vs biomedical (e.g. MedCPT) — decided by a quick pilot on a dev slice outside the 100 eval queries.
+2. ~~Embedding model final pick~~ **Decided:** `BAAI/bge-small-en-v1.5` for CPU speed. MedCPT and other biomedical models were not compared (listed as untried in REPORT.md).
 3. ~~Deploy backend publicly, or local-only demo?~~ **Decided (2026-09-30): run locally.** Public deployment (Netlify frontend + hosted backend) only if required later.
 
 ## 12. Milestones
