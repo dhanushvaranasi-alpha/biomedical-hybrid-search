@@ -3,10 +3,11 @@
 __pycache__/
 *.pyc
 .pytest_cache/
-data/
-runs/
+/data/
+/runs/
 .cache/
 node_modules/
 frontend/dist/
 .DS_Store
 *.egg-info/
+/runs_dev/
