@@ -67,9 +67,10 @@ for a gain within noise).
    "What is the mechanism of action of decitabine?": the model gives DNMT1 depletion and demethylation; the dataset answer is about p21WAF1 reactivation in AML cell lines. Dataset answers are often excerpts from one abstract, which makes the correctness metric noisy.
 4. **Query expansion hurt:** the KYMRIAH example above.
 
-**Manual review** (`results/review_best.csv`): of the 12 cases where retrieval metrics and the judge disagreed for the best configuration, I read the model answer and the dataset answer for each.
-Six were refusals despite good retrieval (over-cautious or synthesis questions), one was a correct refusal after weak retrieval, and five were answered but scored low because the dataset answer is narrower or different in focus.
-There were no cases of low retrieval with high judged correctness, and no invalid citations. The verdict and notes columns in the sheet are left blank for you to fill in.
+**Manual review** (`results/review_best.csv`, verdict and notes for every row): for the best configuration I read the 12 cases where retrieval metrics were good but the judged correctness was low, comparing the model answer, the dataset answer and the cited passage text.
+Seven were "insufficient evidence" outcomes and five were answered. Of the seven refusals, four were justified (three where the retrieved text really lacks the answer, one borderline about "circulating" levels), two were over-cautious (a partial list was supportable: sarcopenia trials, interferonopathies), and one was a false rejection by the citation validator (the Disambiguate answer was accurate and supported, but a single citation at the end of several sentences was counted as "mostly uncited"; this is a remaining limitation of the validator).
+All five answered cases were correct and grounded; the judge scored them low because the dataset answer is a narrower or differently focused excerpt. Two of the gold passage sets contain unrelated passages (dataset noise), so their recall overstates retrieval.
+Net: the low correctness scores in this group are mostly judge and gold-answer mismatch or strict abstention, not wrong answers. No invalid citations were found. This review was done by me reading the passages, not by an independent annotator.
 
 ## Limitations and honest notes
 
