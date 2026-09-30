@@ -1,0 +1,22 @@
+{
+  "seed_eval": 42,
+  "seed_dev": 43,
+  "qtype_rules": "qtype_v2",
+  "eval_counts": {
+    "treatment": 17,
+    "yesno": 17,
+    "list": 17,
+    "definition": 17,
+    "effect": 16,
+    "mechanism": 16
+  },
+  "dev_counts": {
+    "yesno": 34,
+    "definition": 34,
+    "effect": 33,
+    "treatment": 33,
+    "list": 33,
+    "mechanism": 33
+  },
+  "eval_gold_mean": 6.54
+}
