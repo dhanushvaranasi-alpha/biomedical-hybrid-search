@@ -55,6 +55,16 @@ def _search(req: Req):
     return p, tr
 
 
+@app.on_event("startup")
+def warm():
+    """Load indexes and the embedding model once at startup (no LLM call), so the first search is not slow."""
+    try:
+        p = pipeline("hybrid")
+        p.den.search("warm up", 1)
+    except Exception as e:  # indexes not built yet: the API still starts and reports a clear error per request
+        print("warm-up skipped:", e)
+
+
 @app.get("/api/health")
 def health():
     return {"status": "ok", "llm_spent_usd": client().spent(), "llm_budget_usd": client().budget}
