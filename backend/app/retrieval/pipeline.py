@@ -37,10 +37,14 @@ class SearchPipeline:
 
     def run(self, query: str, top: int = 10) -> dict:
         c, t0, tm = self.cfg, time.perf_counter(), {}
+        expansion_usage = None
         queries, weights = [query], [c["expansion"]["orig_weight"]]
         if c["expansion"]["enabled"]:
             s = time.perf_counter()
+            if self.expander is not None:
+                self.expander.usage = None
             alts = self.expander(query, c["expansion"]["n"]) if self.expander else []
+            expansion_usage = getattr(self.expander, "usage", None)
             tm["expand_ms"] = (time.perf_counter() - s) * 1000
             for a in alts:
                 if a.strip().lower() not in {q.lower() for q in queries}:
@@ -68,4 +72,4 @@ class SearchPipeline:
         results = [{"rank": i + 1, "pmid": p, "score": sc,
                     "lexical": lex0.get(p), "dense": den0.get(p)} for i, (p, sc) in enumerate(fused[:top])]
         return {"query": query, "expansions": queries[1:], "config_hash": config_hash(c),
-                "results": results, "timings_ms": tm}
+                "results": results, "timings_ms": tm, "expansion_usage": expansion_usage}

@@ -21,15 +21,17 @@ class ClientRagasLLM(BaseRagasLLM):
     def __init__(self, client, model: str, max_tokens: int = 3000):
         super().__init__()
         self.client, self.model, self.max_tokens = client, model, max_tokens
-        self.calls = 0
+        self.calls, self.cost = 0, 0.0
+        self._lock = __import__('threading').Lock()
 
     def is_finished(self, response) -> bool:
         return True
 
     def generate_text(self, prompt, n=1, temperature=0.01, stop=None, callbacks=None) -> LLMResult:
-        self.calls += 1
         r = self.client.chat(self.model, [{"role": "user", "content": prompt.to_string()}], JUDGE_VERSION,
                              max_tokens=self.max_tokens, temperature=0.0, reasoning={"effort": "low"})
+        with self._lock:
+            self.calls += 1; self.cost += r["cost_usd"]
         return LLMResult(generations=[[Generation(text=r["text"])]])
 
     async def agenerate_text(self, prompt, n=1, temperature=0.01, stop=None, callbacks=None) -> LLMResult:
