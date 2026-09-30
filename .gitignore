@@ -9,3 +9,4 @@ runs/
 node_modules/
 frontend/dist/
 .DS_Store
+*.egg-info/
