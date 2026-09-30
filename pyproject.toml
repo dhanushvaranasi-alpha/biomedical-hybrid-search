@@ -16,7 +16,12 @@ dependencies = [
   "uvicorn",
   "litellm",
   "python-dotenv",
-  "ragas",
+  "ragas==0.4.3",
+  # ragas 0.4.3 imports langchain_community.chat_models.vertexai, removed in langchain-community 0.4:
+  "langchain-community<0.4",
+  "langchain<1",
+  "langchain-openai<1",
+  "langchain-core<1",
 ]
 
 [project.optional-dependencies]
