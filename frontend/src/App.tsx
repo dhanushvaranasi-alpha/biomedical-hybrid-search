@@ -59,7 +59,9 @@ export default function App() {
             <article key={h.pmid} id={`hit-${h.pmid}`} className={"hit" + (hl === h.pmid ? " hl" : "")}>
               <div className="row"><b>#{h.rank}</b>
                 <a href={h.source_url} target="_blank" rel="noreferrer">PMID:{h.pmid}</a>
-                {h.selected_for_context && <span className="tag">used in answer</span>}
+                {a?.status === "answered" && a.valid.includes(h.pmid)
+                  ? <span className="tag">cited in answer</span>
+                  : a?.status === "answered" && h.selected_for_context && <span className="tag muted">sent to model, not cited</span>}
                 <span className="muted">fused {h.score.toFixed(4)}
                   {h.lexical && ` · BM25 #${h.lexical[0]} (${h.lexical[1].toFixed(1)})`}
                   {h.dense && ` · dense #${h.dense[0]} (${h.dense[1].toFixed(3)})`}</span></div>
