@@ -1,0 +1,7 @@
+# PROVISIONAL "strongest variant": tuned hybrid (weighted fusion). Chosen on the 200-query DEV set only.
+# Query expansion (LLM) is not yet evaluated; set expansion.enabled=true only if the dev test shows a gain.
+name: best
+mode: hybrid
+fusion:
+  method: weighted
+  alpha: 0.4
