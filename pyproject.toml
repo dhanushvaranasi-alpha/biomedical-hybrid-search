@@ -1,0 +1,30 @@
+[project]
+name = "biomedical-hybrid-search"
+version = "0.1.0"
+description = "Hybrid (BM25 + dense) biomedical RAG over rag-mini-bioasq with offline evaluation"
+requires-python = ">=3.10"
+dependencies = [
+  "pandas",
+  "pyarrow",
+  "pyyaml",
+  "pydantic>=2",
+  "bm25s",
+  "PyStemmer",
+  "chromadb",
+  "sentence-transformers",
+  "fastapi",
+  "uvicorn",
+  "litellm",
+  "python-dotenv",
+  "ragas",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["backend"]
+
+[tool.pytest.ini_options]
+pythonpath = ["backend", "."]
+testpaths = ["tests"]

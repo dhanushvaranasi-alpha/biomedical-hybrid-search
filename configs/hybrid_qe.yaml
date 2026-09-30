@@ -1,0 +1,4 @@
+name: hybrid_qe
+mode: hybrid
+expansion:
+  enabled: true
