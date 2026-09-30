@@ -18,7 +18,7 @@ def test_all_invalid_is_insufficient():
 
 
 def test_uncited_is_insufficient():
-    r = validate("Claim one. Claim two. Claim three [PMID:1].", {1})
+    r = validate("Claim number one is stated here. Claim number two is stated here. Claim three is cited [PMID:1].", {1})
     assert r["status"] == "insufficient_evidence" and r["reason"] == "mostly_uncited"
 
 
@@ -29,3 +29,18 @@ def test_model_flag():
 def test_multi_id_group_with_one_invalid():
     r = validate("Fact [PMID:1, PMID:7].", {1})
     assert r["valid"] == [1] and r["invalid"] == [7] and "[PMID:1]" in r["answer"]
+
+
+def test_citation_after_period_belongs_to_previous_sentence():
+    r = validate("Yes. Papilin is a secreted protein. [PMID:1] It binds collagen. [PMID:2]", {1, 2})
+    assert r["status"] == "answered" and r["uncited_sentences"] == []
+
+
+def test_short_leadin_not_counted_as_uncited():
+    r = validate("No. UCEs are depleted among segmental duplications [PMID:1].", {1})
+    assert r["status"] == "answered" and r["n_sentences"] == 1
+
+
+def test_genuinely_uncited_still_downgraded():
+    r = validate("Drug A is effective in many patients. Drug B is also effective in trials. Drug C works [PMID:1].", {1})
+    assert r["status"] == "insufficient_evidence" and r["reason"] == "mostly_uncited"

@@ -8,6 +8,9 @@ import re
 CITE = re.compile(r"\[PMID:\s*(\d+(?:\s*,\s*(?:PMID:\s*)?\d+)*)\]", re.I)
 SENT = re.compile(r"(?<=[.!?])\s+(?=[A-Z0-9(\[])")
 MAX_UNCITED_FRAC = 0.5
+MIN_WORDS = 4  # shorter fragments such as "Yes." / "No." are lead-ins, not factual claims
+# models often write "Claim. [PMID:1]" - the citation belongs to the preceding sentence, not a new one
+_TRAILING = re.compile(r"([.!?])((?:\s*\[PMID:[^\]]*\])+)")
 
 
 def _ids(group: str) -> list[int]:
@@ -26,7 +29,8 @@ def validate(answer: str, context_pmids: set[int], model_insufficient: bool = Fa
         return "[" + ", ".join(f"PMID:{i}" for i in keep) + "]" if keep else ""
 
     clean = re.sub(r"\s+([.,;])", r"\1", CITE.sub(strip_invalid, answer)).strip()
-    sentences = [s for s in SENT.split(clean) if s.strip()]
+    sentences = [s for s in SENT.split(_TRAILING.sub(lambda m: m.group(2) + m.group(1), clean)) if s.strip()]
+    sentences = [s for s in sentences if CITE.search(s) or len(s.split()) >= MIN_WORDS]
     uncited = [s for s in sentences if not CITE.search(s)]
     n_cit = len(cited) + len(invalid)
     reason = None
