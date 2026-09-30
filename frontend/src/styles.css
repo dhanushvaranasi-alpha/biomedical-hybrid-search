@@ -1,0 +1,14 @@
+:root { --bg:#fff; --fg:#1b2430; --muted:#5b6675; --line:#dfe4ea; --acc:#1f5fbf; --warn:#fff4e0; --warnb:#e0a030; --hl:#eef4ff; }
+@media (prefers-color-scheme: dark) { :root { --bg:#12161c; --fg:#e6ebf2; --muted:#9aa6b6; --line:#2b3441; --acc:#7db0ff; --warn:#2b2412; --warnb:#a87a1c; --hl:#1b2a44; } }
+* { box-sizing: border-box; } body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui,sans-serif; }
+main { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; } h1 { margin:0 0 4px; font-size:1.6rem; } h2 { font-size:1.05rem; margin:24px 0 8px; }
+.muted { color:var(--muted); font-size:.9rem; } .bar { display:flex; gap:8px; margin:16px 0 8px; flex-wrap:wrap; }
+input[type=text], .bar input { flex:1 1 260px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:transparent; color:inherit; font:inherit; }
+select, .bar button { padding:10px 14px; border:1px solid var(--line); border-radius:8px; background:transparent; color:inherit; font:inherit; }
+.bar button { background:var(--acc); color:#fff; border-color:var(--acc); cursor:pointer; } .bar button:disabled { opacity:.6; }
+.chips { display:flex; gap:6px; flex-wrap:wrap; margin:8px 0; } .chip { border:1px solid var(--line); border-radius:999px; padding:4px 10px; background:transparent; color:inherit; font-size:.85rem; cursor:pointer; }
+.chip.static { cursor:default; } .banner { padding:12px 16px; border-radius:8px; margin-top:16px; } .banner.err { border:1px solid #c33; } .banner.warn { background:var(--warn); border:1px solid var(--warnb); }
+.answer { font-size:1.05rem; } .cite { border:1px solid var(--acc); color:var(--acc); background:transparent; border-radius:6px; font-size:.75rem; padding:0 5px; margin:0 2px; cursor:pointer; }
+.hit { border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:8px 0; } .hit.hl { background:var(--hl); border-color:var(--acc); }
+.hit p { margin:6px 0 0; } .row { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; } a { color:var(--acc); }
+.tag { font-size:.75rem; border:1px solid var(--acc); color:var(--acc); border-radius:4px; padding:0 6px; } footer { margin-top:24px; }
