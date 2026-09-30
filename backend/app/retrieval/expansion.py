@@ -10,7 +10,8 @@ def make_expander(client, model: str | None = None):
         msgs = [{"role": "system", "content": EXPANSION_SYSTEM},
                 {"role": "user", "content": f"N = {n}\nQuestion: {query}"}]
         try:
-            r = client.chat(model, msgs, EXPANSION_VERSION, json_mode=True, max_tokens=200)
+            r = client.chat(model, msgs, EXPANSION_VERSION, json_mode=True, max_tokens=300,
+                            reasoning={"enabled": False})
             txt = re.sub(r"^```(?:json)?|```$", "", r["text"].strip(), flags=re.M).strip()
             qs = json.loads(txt)["queries"]
             return [q.strip() for q in qs if isinstance(q, str) and q.strip()][:n]

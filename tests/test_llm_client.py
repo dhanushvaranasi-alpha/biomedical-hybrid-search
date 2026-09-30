@@ -32,3 +32,11 @@ def test_budget_cap_blocks_call_and_persists(tmp_path):
     with pytest.raises(BudgetExceeded):
         c2.chat("m", [{"role": "user", "content": "4"}], "v")
     assert len(f.calls) == 2
+
+
+def test_empty_completion_not_cached_but_cost_counted(tmp_path):
+    def f(model, messages, **p):
+        return {"choices": [{"message": {"content": None}}], "usage": {"prompt_tokens": 5, "completion_tokens": 200, "cost": 0.01}}
+    c = LLMClient(tmp_path / "c.sqlite", budget_usd=1, completion_fn=f)
+    a = c.chat("m", [{"role": "user", "content": "x"}], "v"); b = c.chat("m", [{"role": "user", "content": "x"}], "v")
+    assert a["empty"] and b["empty"] and not b["cached"] and abs(c.spent() - 0.02) < 1e-9

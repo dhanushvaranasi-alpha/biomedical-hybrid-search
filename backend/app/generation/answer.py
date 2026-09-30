@@ -35,7 +35,8 @@ def answer(client, question: str, context: list[tuple[int, str]], model: str | N
         return {"status": "insufficient_evidence", "reason": "no_passages", "answer": "", "valid": [], "invalid": [],
                 "valid_rate": 0.0, "uncited_sentences": [], "usage": {}}
     msgs = [{"role": "system", "content": ANSWER_SYSTEM}, {"role": "user", "content": answer_user(question, context)}]
-    r = client.chat(model, msgs, ANSWER_VERSION, json_mode=True, max_tokens=500)
+    r = client.chat(model, msgs, ANSWER_VERSION, json_mode=True, max_tokens=600,
+                    reasoning={"enabled": False})
     raw = re.sub(r"^```(?:json)?|```$", "", r["text"].strip(), flags=re.M).strip()
     try:
         d = json.loads(raw); ans, insuff = str(d.get("answer", "")), bool(d.get("insufficient_evidence", False))

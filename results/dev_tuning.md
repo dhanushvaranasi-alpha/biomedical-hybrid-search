@@ -16,6 +16,21 @@ With n=200, differences of about 0.02 are within noise; these runs only guide th
 Findings:
 - BM25 beats dense on every metric here; equal-weight RRF is no better than BM25 on nDCG. Down-weighting dense (alpha 0.3-0.4) helps.
 - Reranking alone hurts; a blend gains about +0.015 nDCG, within noise, at roughly 9 s/query on 2 CPU cores versus about 25 ms without it. Not selected.
-- Provisional strongest variant: `configs/best.yaml` (weighted hybrid, alpha=0.4), pending the query-expansion test.
+- Query expansion (below) gives a consistent gain, so the strongest variant is `configs/best.yaml`: weighted hybrid (alpha 0.4) + query expansion.
+
+## Query expansion on the same 200 dev queries (model openai/gpt-6-luna, 3 alternates, reasoning disabled)
+
+LLM cost for all 200 expansions: $0.0096 (OpenRouter usage accounting). Paired difference in nDCG@10 vs. the first row, mean (standard error):
+
+| Setup | R@5 | R@10 | MRR@10 | nDCG@10 | paired dnDCG |
+|---|---|---|---|---|---|
+| Hybrid weighted a=0.4, no QE | 0.582 | 0.746 | 0.858 | 0.775 | - |
+| + QE, alternate weight 0.3 | 0.607 | 0.772 | 0.873 | 0.800 | +0.025 (0.008) |
+| + QE, alternate weight 0.5 | 0.610 | 0.773 | 0.870 | 0.800 | +0.025 (0.009) |
+| + QE, alternate weight 1.0 | 0.613 | 0.778 | 0.857 | 0.799 | +0.024 (0.010) |
+| Hybrid RRF equal weights, no QE | 0.558 | 0.733 | 0.823 | 0.744 | -0.031 (0.008) |
+| + QE, RRF equal weights, alt 0.5 | 0.596 | 0.758 | 0.857 | 0.785 | +0.009 (0.011) |
+
+Reproduce: `python -m eval.sweep_qe` (needs the OpenRouter key; repeat runs hit the cache and cost nothing).
 
 Reproduce: `python -m eval.sweep`, `python -m eval.sweep_rerank BAAI/bge-reranker-base 30`.

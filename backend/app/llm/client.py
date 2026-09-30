@@ -42,12 +42,18 @@ class LLMClient:
         if self._completion is not None:
             return self._completion(model=model, messages=messages, **params)
         import litellm
+        params = dict(params)
+        extra = {"usage": {"include": True}}
+        if "reasoning" in params:  # OpenRouter unified reasoning control, e.g. {"effort": "low"}
+            extra["reasoning"] = params.pop("reasoning")
         return litellm.completion(model=model, messages=messages, api_key=os.environ["OPENROUTER_API_KEY"],
-                                  extra_body={"usage": {"include": True}}, **params)
+                                  extra_body=extra, **params)
 
     def chat(self, model: str, messages: list[dict], prompt_version: str, json_mode: bool = False,
-             max_tokens: int = 600, temperature: float = 0.0) -> dict:
+             max_tokens: int = 600, temperature: float = 0.0, reasoning: dict | None = None) -> dict:
         params = {"temperature": temperature, "max_tokens": max_tokens}
+        if reasoning:
+            params["reasoning"] = reasoning
         if json_mode:
             params["response_format"] = {"type": "json_object"}
         k = self.key(model, prompt_version, messages, params)
@@ -69,8 +75,11 @@ class LLMClient:
         text = msg["content"] if isinstance(msg, dict) else msg.content
         out = {"text": text, "prompt_tokens": int(get(u, "prompt_tokens")), "completion_tokens": int(get(u, "completion_tokens")),
                "cost_usd": cost, "latency_ms": ms, "model": model, "cached": False}
+        out["empty"] = not (text and text.strip())
+        out["text"] = text or ""
         with self.lock:
-            self.db.execute("INSERT OR REPLACE INTO cache VALUES(?,?,?,?)", (k, json.dumps(out), cost, time.time()))
+            if not out["empty"]:  # never cache an empty completion (e.g. all tokens spent on hidden reasoning)
+                self.db.execute("INSERT OR REPLACE INTO cache VALUES(?,?,?,?)", (k, json.dumps(out), cost, time.time()))
             self.db.execute("UPDATE spend SET usd = usd + ? WHERE id=1", (cost,))
             self.db.commit()
         self.stats["calls"] += 1; self.stats["prompt_tokens"] += out["prompt_tokens"]
